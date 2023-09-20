@@ -19,23 +19,16 @@ namespace backend_tpgk.Models
         [Column("number")]
         public required string Number {get; set;}
 
-        [Required]
         [Column("complement")]
         public string? Complement {get; set;}
 
-        [ForeignKey("Rue")]
-        [Required]
-        public Guid RueId {get; set;}
+        [Column("rueId")]
         public required Rue Rue {get; set;}
 
-        [ForeignKey("Ville")]
-        [Required]
-        public Guid VilleId {get; set;}
+        [Column("villeId")]
         public required Ville Ville {get; set;}
 
-        [ForeignKey("Pays")]
-        [Required]
-        public Guid PaysId {get; set;}
+        [Column("paysId")]
         public required Pays Pays {get; set;}
 
         public ICollection<Utilisateur>? Utilisateurs {get; set;}

@@ -34,7 +34,7 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("birthday")]
-        public required DateOnly Birthday {get; set;}
+        public required DateTime Birthday {get; set;}
 
         [Required]
         [Column("createdAt")]
@@ -47,16 +47,11 @@ namespace backend_tpgk.Models
         [Column("enable")]
         public required bool Enable {get; set;}
 
-        [ForeignKey("Role")]
         [Required]
         [Column("roleId")]
-        public required Guid RoleId {get; set;}
         public required Role Role {get; set;}
 
-        [ForeignKey("Adresse")]
-        [Required]
-        [Column("roleId")]
-        public required Guid AdresseId {get; set;}
+        [Column("adresseId")]
         public required Adresse Adresse {get; set;}
 
         public ICollection<Commande>? Commandes {get; set;}

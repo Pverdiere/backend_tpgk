@@ -71,8 +71,11 @@ namespace backend_tpgk.Models
         public required string Couleur {get; set;}
 
         [Required]
+        [Column("urlImg")]
+        public required string UrlImg {get; set;}
+
+        [Required]
         [Column("fabricantId")]
-        public Guid FabricantId {get; set;}
         public required Fabricant Fabricant {get; set;}
 
         public ICollection<Avis>? Utilisateurs {get; set;}

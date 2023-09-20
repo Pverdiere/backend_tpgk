@@ -23,10 +23,7 @@ namespace backend_tpgk.Models
         [Column("codePostal")]
         public required string CodePostal {get; set;}
 
-        [ForeignKey("Pays")]
-        [Required]
         [Column("paysId")]
-        public required Guid PaysId {get; set;}
         public required Pays Pays {get; set;}
 
         public required ICollection<Rue> Rues {get; set;}

@@ -12,13 +12,13 @@ namespace backend_tpgk.Models
     public class CommandeProduit
     {
         [Key]
+        [Column("id")]
+        public Guid Uuid {get; set;}
+
         [Column("commandeId")]
-        public Guid CommandeId {get; set;}
         public required Commande Commande {get; set;}
 
-        [Key]
         [Column("produitId")]
-        public Guid ProduitId {get; set;}
         public required Produit Produit {get; set;}
 
         [Required]

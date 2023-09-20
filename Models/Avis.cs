@@ -26,14 +26,10 @@ namespace backend_tpgk.Models
         [Column("validation")]
         public bool? Validation {get; set;}
 
-        [Required]
         [Column("utilisateurId")]
-        public Guid UtilisateurId {get; set;}
         public required Utilisateur Utilisateur {get; set;}
 
-        [Required]
         [Column("ProduitId")]
-        public Guid ProduitId {get; set;}
         public required Produit Produit {get; set;}
     }
 }

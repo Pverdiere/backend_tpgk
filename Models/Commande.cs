@@ -22,9 +22,7 @@ namespace backend_tpgk.Models
         [Column("updatedAt")]
         public DateTime? UpdatedAt {get; set;}
 
-        [ForeignKey("Status")]
-        [Required]
-        public Guid StatusId {get; set;}
+        [Column("statusId")]
         public required Status Status {get; set;}
 
         public ICollection<Utilisateur>? Utilisateurs {get; set;}
