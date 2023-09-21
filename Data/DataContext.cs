@@ -79,6 +79,5 @@ namespace backend_tpgk.Data
                 }
             );
         }
-
     }
 }

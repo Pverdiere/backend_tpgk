@@ -1,5 +1,7 @@
 global using Microsoft.EntityFrameworkCore;
 global using backend_tpgk.Data;
+global using backend_tpgk.Models;
+global using backend_tpgk.Services.RoleService;
 
 var builder = WebApplication.CreateBuilder(args);
 
