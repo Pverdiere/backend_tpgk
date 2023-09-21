@@ -14,7 +14,7 @@ namespace backend_tpgk.Models
     {
         [Key]
         [Column("id")]
-        public Guid Uuid {get; set;}
+        public Guid Uuid {get; set;} = Guid.NewGuid();
 
         [Required]
         [Column("name")]

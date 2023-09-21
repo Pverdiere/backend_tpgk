@@ -14,27 +14,31 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Role>> GetAll()
+    public async Task<ActionResult<ServiceResponse<List<Role>>>> GetAll()
     {
-        return Ok(_roleService.GetAllRoles());
+        return Ok(await _roleService.GetAllRoles());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Role> GetSingle(Guid id)
+    public async Task<ActionResult<ServiceResponse<Role>>> GetSingle(Guid id)
     {
-        return Ok(_roleService.GetRoleById(id));
+        return Ok(await _roleService.GetRoleById(id));
     }
 
     [HttpPost]
-    public ActionResult<List<Role>> AddRole(HttpContent body)
+    public async Task<ActionResult<ServiceResponse<Role>>> AddRole([FromBody] Role body)
     {
-        return Ok(_roleService.AddRole(body));
+        return Ok(await _roleService.AddRole(body));
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Role> UpdateRole(Guid id, HttpContent body)
+    public async Task<ActionResult<ServiceResponse<Role>>> UpdateRole(Guid id, [FromBody] Role body)
     {
-        return Ok(_roleService.UpdateRole(id, body));
+        return Ok(await _roleService.UpdateRole(id, body));
     }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ServiceResponse<Role>>> DeleteRole(Guid id){
+        return Ok(await _roleService.DeleteRole(id));
+    }
 }

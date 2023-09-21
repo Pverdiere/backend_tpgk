@@ -13,7 +13,7 @@ namespace backend_tpgk.Models
     {
         [Key]
         [Column("id")]
-        public Guid Uuid {get; set;}
+        public Guid Uuid {get; set;} = Guid.NewGuid();
 
         [Column("commandeId")]
         public required Commande Commande {get; set;}

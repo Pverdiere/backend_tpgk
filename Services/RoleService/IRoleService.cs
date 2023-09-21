@@ -7,10 +7,10 @@ namespace backend_tpgk.Services.RoleService
 {
     public interface IRoleService
     {
-        List<Role> GetAllRoles();
-        Role GetRoleById(Guid uuid);
-        List<Role> AddRole(HttpContent newRole);
-        List<Role> DeleteRole(Guid UuidDeletedRole);
-        List<Role> UpdateRole(Guid uuid, HttpContent roleUpdated);
+        Task<ServiceResponse<List<Role>>> GetAllRoles();
+        Task<ServiceResponse<Role>> GetRoleById(Guid uuid);
+        Task<ServiceResponse<Role>> AddRole(Role newRole);
+        Task<ServiceResponse<Role>> DeleteRole(Guid UuidDeletedRole);
+        Task<ServiceResponse<Role>> UpdateRole(Guid uuid, Role roleUpdated);
     }
 }

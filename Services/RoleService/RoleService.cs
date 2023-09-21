@@ -1,45 +1,92 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace backend_tpgk.Services.RoleService
 {
     public class RoleService : IRoleService
     {
-        private readonly IActionResultTypeMapper _mapper;
         private readonly DataContext _context;
 
-        public RoleService(IActionResultTypeMapper mapper, DataContext context)
+        public RoleService(DataContext context)
         {
-            _mapper = mapper;
             _context = context;
         }
 
-        public List<Role> AddRole(HttpContent newRole)
+        public async Task<ServiceResponse<Role>> AddRole(Role newRole)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Role> serviceResponse = new();
+            System.Diagnostics.Debug.WriteLine(newRole);
+            try{
+                await _context.Role.AddAsync(newRole);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = newRole;
+            }catch(Exception ex){
+                serviceResponse.Message = ex.Message;
+                serviceResponse.Success = false;
+            }
+            
+            return serviceResponse;
         }
 
-        public List<Role> DeleteRole(Guid UuidDeletedRole)
+        public async Task<ServiceResponse<Role>> DeleteRole(Guid uuid)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Role> serviceResponse = new();
+            Role? dbRole = await _context.Role.Where(r => r.Uuid == uuid).FirstOrDefaultAsync();
+            if(dbRole is null){
+                serviceResponse.Message = "Role not found";
+            }else{
+                try{
+                    _context.Role.Remove(dbRole);
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = dbRole;
+                }catch(Exception ex){
+                    serviceResponse.Message = ex.Message;
+                    serviceResponse.Success = false;
+                }
+            }
+            return serviceResponse;
         }
 
-        public List<Role> GetAllRoles()
+        public async Task<ServiceResponse<List<Role>>> GetAllRoles()
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<Role>> serviceResponse = new();
+            List<Role> dbRole = await _context.Role.ToListAsync();
+            serviceResponse.Data = dbRole;
+            return serviceResponse;
         }
 
-        public Role GetRoleById(Guid uuid)
+        public async Task<ServiceResponse<Role>> GetRoleById(Guid uuid)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Role> serviceResponse = new();
+            Role? dbRole = await _context.Role.Where(r => r.Uuid == uuid).FirstOrDefaultAsync();
+            if(dbRole is null){
+                serviceResponse.Message = "Role not found";
+            }else{
+                serviceResponse.Data = dbRole;
+            }
+            return serviceResponse;
         }
 
-        public List<Role> UpdateRole(Guid uuid, HttpContent roleUpdated)
+        public async Task<ServiceResponse<Role>> UpdateRole(Guid uuid, Role updatedRole)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Role> serviceResponse = new();
+            Role? dbRole = await _context.Role.Where(r => r.Uuid == uuid).FirstOrDefaultAsync();
+            if(dbRole is null){
+                serviceResponse.Message = "Role not found";
+            }else{
+                if(updatedRole.Name is not null) dbRole.Name = updatedRole.Name;
+                try{
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = dbRole;
+                }catch(Exception ex){
+                    serviceResponse.Message = ex.Message;
+                    serviceResponse.Success = false;
+                }
+            }
+            return serviceResponse;
         }
     }
 }
