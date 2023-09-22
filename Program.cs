@@ -3,6 +3,7 @@ global using backend_tpgk.Data;
 global using backend_tpgk.Models;
 global using backend_tpgk.Services.RoleService;
 global using backend_tpgk.Services.StatusService;
+global using backend_tpgk.Services.AdresseService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IStatusService, StatusService>();
+builder.Services.AddScoped<IAdresseService, AdresseService>();
 
 var app = builder.Build();
 
