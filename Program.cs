@@ -8,6 +8,7 @@ global using backend_tpgk.Services.AvisService;
 global using backend_tpgk.Services.CommandeService;
 global using backend_tpgk.Services.CommandeProduitService;
 global using backend_tpgk.Services.FabricantService;
+global using backend_tpgk.Services.PaysService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IAvisService, AvisService>();
 builder.Services.AddScoped<ICommandeService, CommandeService>();
 builder.Services.AddScoped<ICommandeProduitService, CommandeProduitService>();
 builder.Services.AddScoped<IFabricantService, FabricantService>();
+builder.Services.AddScoped<IPaysService, PaysService>();
 
 var app = builder.Build();
 
