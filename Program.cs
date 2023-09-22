@@ -4,6 +4,7 @@ global using backend_tpgk.Models;
 global using backend_tpgk.Services.RoleService;
 global using backend_tpgk.Services.StatusService;
 global using backend_tpgk.Services.AdresseService;
+global using backend_tpgk.Services.AvisService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IStatusService, StatusService>();
 builder.Services.AddScoped<IAdresseService, AdresseService>();
+builder.Services.AddScoped<IAvisService, AvisService>();
 
 var app = builder.Build();
 

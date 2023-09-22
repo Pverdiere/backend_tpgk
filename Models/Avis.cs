@@ -21,7 +21,7 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("createdAt")]
-        public required DateTime CreatedAt {get; set;}
+        public required DateTime CreatedAt {get; set;} = DateTime.Now;
 
         [Column("validation")]
         public bool? Validation {get; set;}
