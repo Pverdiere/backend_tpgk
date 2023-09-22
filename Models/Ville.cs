@@ -23,6 +23,6 @@ namespace backend_tpgk.Models
         [Column("codePostal")]
         public required string CodePostal {get; set;}
 
-        public ICollection<Adresse>? Adresse {get; set;}
+        public List<Adresse>? Adresse {get; set;}
     }
 }

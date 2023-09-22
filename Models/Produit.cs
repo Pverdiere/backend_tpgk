@@ -78,7 +78,7 @@ namespace backend_tpgk.Models
         [Column("fabricantId")]
         public required Fabricant Fabricant {get; set;}
 
-        public ICollection<Avis>? Utilisateurs {get; set;}
-        public ICollection<CommandeProduit>? CommandeProduit {get; set;}
+        public List<Avis>? Utilisateurs {get; set;}
+        public List<CommandeProduit>? CommandeProduit {get; set;}
     }
 }

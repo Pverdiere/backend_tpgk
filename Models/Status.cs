@@ -20,6 +20,6 @@ namespace backend_tpgk.Models
         [Column("name")]
         public required string Name {get; set;}
 
-        public ICollection<Commande>? Commandes {get; set;}
+        public List<Commande>? Commandes {get; set;}
     }
 }

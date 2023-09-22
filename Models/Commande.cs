@@ -17,7 +17,7 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("createdAt")]
-        public required DateTime CreatedAt {get; set;}
+        public required DateTime CreatedAt {get; set;} = DateTime.Now;
 
         [Column("updatedAt")]
         public DateTime? UpdatedAt {get; set;}
@@ -25,8 +25,8 @@ namespace backend_tpgk.Models
         [Column("statusId")]
         public required Status Status {get; set;}
 
-        public ICollection<Utilisateur>? Utilisateurs {get; set;}
+        public List<Utilisateur>? Utilisateurs {get; set;}
 
-        public ICollection<CommandeProduit>? CommandeProduits {get; set;}
+        public List<CommandeProduit>? CommandeProduits {get; set;}
     }
 }

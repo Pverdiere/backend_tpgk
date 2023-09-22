@@ -31,6 +31,6 @@ namespace backend_tpgk.Models
         [Column("paysId")]
         public required Pays Pays {get; set;}
 
-        public ICollection<Utilisateur>? Utilisateurs {get; set;}
+        public List<Utilisateur>? Utilisateurs {get; set;}
     }
 }

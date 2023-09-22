@@ -20,6 +20,6 @@ namespace backend_tpgk.Models
         [Column("name")]
         public required string Name {get; set;}
 
-        public ICollection<Utilisateur>? Utilisateurs {get; set;}
+        public List<Utilisateur>? Utilisateurs {get; set;}
     }
 }

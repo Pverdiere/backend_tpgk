@@ -54,8 +54,8 @@ namespace backend_tpgk.Models
         [Column("adresseId")]
         public required Adresse Adresse {get; set;}
 
-        public ICollection<Commande>? Commandes {get; set;}
+        public List<Commande>? Commandes {get; set;}
 
-        public ICollection<Avis>? Avis {get; set;}
+        public List<Avis>? Avis {get; set;}
     }
 }
