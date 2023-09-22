@@ -19,7 +19,7 @@ namespace backend_tpgk.Data
         public DbSet<Avis> Avis => Set<Avis>();
         public DbSet<Commande> Commande => Set<Commande>();
         public DbSet<CommandeProduit> CommandeProduit => Set<CommandeProduit>();
-        public DbSet<Fabricant> Fabricants => Set<Fabricant>();
+        public DbSet<Fabricant> Fabricant => Set<Fabricant>();
         public DbSet<Pays> Pays => Set<Pays>();
         public DbSet<Produit> Produits => Set<Produit>();
         public DbSet<Role> Role => Set<Role>();
@@ -34,12 +34,12 @@ namespace backend_tpgk.Data
                 relationship.DeleteBehavior = DeleteBehavior.NoAction;
             }
 
-            Status enPreparation = new() {Uuid = Guid.NewGuid(), Name = "En Préparation", Commandes = new Collection<Commande>()};
-            Status preparee = new() {Uuid = Guid.NewGuid(), Name = "Préparée", Commandes = new Collection<Commande>()};
-            Status expediee = new() {Uuid = Guid.NewGuid(), Name = "Expédiée", Commandes = new Collection<Commande>()};
-            Status livree = new() {Uuid = Guid.NewGuid(), Name = "Livrée", Commandes = new Collection<Commande>()};
+            Status enPreparation = new() {Uuid = Guid.NewGuid(), Name = "En Préparation", Commandes = new List<Commande>()};
+            Status preparee = new() {Uuid = Guid.NewGuid(), Name = "Préparée", Commandes = new List<Commande>()};
+            Status expediee = new() {Uuid = Guid.NewGuid(), Name = "Expédiée", Commandes = new List<Commande>()};
+            Status livree = new() {Uuid = Guid.NewGuid(), Name = "Livrée", Commandes = new List<Commande>()};
 
-            Fabricant fabricant = new() {Uuid = Guid.NewGuid(), Name = "Roger", Produit = new Collection<Produit>()};
+            Fabricant fabricant = new() {Uuid = Guid.NewGuid(), Name = "Roger", Produit = new List<Produit>()};
 
             modelBuilder.Entity<Role>().HasData(
                 new{
