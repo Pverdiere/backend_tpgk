@@ -2,6 +2,7 @@ global using Microsoft.EntityFrameworkCore;
 global using backend_tpgk.Data;
 global using backend_tpgk.Models;
 global using backend_tpgk.Services.RoleService;
+global using backend_tpgk.Services.StatusService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IStatusService, StatusService>();
 
 var app = builder.Build();
 

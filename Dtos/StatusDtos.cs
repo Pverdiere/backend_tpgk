@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend_tpgk.Dtos
 {
-    public class RoleDtos
+    public class StatusDtos
     {
         public string? Name {get; set;}
     }

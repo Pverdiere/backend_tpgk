@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using backend_tpgk.Dtos;
 
 namespace backend_tpgk.Services.RoleService
 {
@@ -70,7 +71,7 @@ namespace backend_tpgk.Services.RoleService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Role>> UpdateRole(Guid uuid, Role updatedRole)
+        public async Task<ServiceResponse<Role>> UpdateRole(Guid uuid, RoleDtos updatedRole)
         {
             ServiceResponse<Role> serviceResponse = new();
             Role? dbRole = await _context.Role.Where(r => r.Uuid == uuid).FirstOrDefaultAsync();

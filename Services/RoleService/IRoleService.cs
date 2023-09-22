@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend_tpgk.Dtos;
 
 namespace backend_tpgk.Services.RoleService
 {
@@ -11,6 +12,6 @@ namespace backend_tpgk.Services.RoleService
         Task<ServiceResponse<Role>> GetRoleById(Guid uuid);
         Task<ServiceResponse<Role>> AddRole(Role newRole);
         Task<ServiceResponse<Role>> DeleteRole(Guid UuidDeletedRole);
-        Task<ServiceResponse<Role>> UpdateRole(Guid uuid, Role roleUpdated);
+        Task<ServiceResponse<Role>> UpdateRole(Guid uuid, RoleDtos roleUpdated);
     }
 }

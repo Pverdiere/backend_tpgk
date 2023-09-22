@@ -1,3 +1,4 @@
+using backend_tpgk.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_tpgk.Controllers;
@@ -32,7 +33,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<ServiceResponse<Role>>> UpdateRole(Guid id, [FromBody] Role body)
+    public async Task<ActionResult<ServiceResponse<Role>>> UpdateRole(Guid id, [FromBody] RoleDtos body)
     {
         return Ok(await _roleService.UpdateRole(id, body));
     }
