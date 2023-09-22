@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend_tpgk.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,6 +74,19 @@ namespace backend_tpgk.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "villes",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    codePostal = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_villes", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "produit",
                 columns: table => new
                 {
@@ -102,25 +115,6 @@ namespace backend_tpgk.Migrations
                         name: "FK_produit_fabricant_FabricantUuid",
                         column: x => x.FabricantUuid,
                         principalTable: "fabricant",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "villes",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    codePostal = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaysUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_villes", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_villes_pays_PaysUuid",
-                        column: x => x.PaysUuid,
-                        principalTable: "pays",
                         principalColumn: "id");
                 });
 
@@ -175,28 +169,6 @@ namespace backend_tpgk.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RueVille",
-                columns: table => new
-                {
-                    RuesUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VillesUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RueVille", x => new { x.RuesUuid, x.VillesUuid });
-                    table.ForeignKey(
-                        name: "FK_RueVille_rues_RuesUuid",
-                        column: x => x.RuesUuid,
-                        principalTable: "rues",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_RueVille_villes_VillesUuid",
-                        column: x => x.VillesUuid,
-                        principalTable: "villes",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "commandeProduit",
                 columns: table => new
                 {
@@ -236,8 +208,7 @@ namespace backend_tpgk.Migrations
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     enable = table.Column<bool>(type: "bit", nullable: false),
                     RoleUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdresseUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VilleUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    AdresseUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -251,11 +222,6 @@ namespace backend_tpgk.Migrations
                         name: "FK_Utilisateurs_roles_RoleUuid",
                         column: x => x.RoleUuid,
                         principalTable: "roles",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Utilisateurs_villes_VilleUuid",
-                        column: x => x.VilleUuid,
-                        principalTable: "villes",
                         principalColumn: "id");
                 });
 
@@ -312,10 +278,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("44c58005-9cfa-450c-93ba-72a528dd006f"), "Assistant" },
-                    { new Guid("4cdaac44-07f2-4232-acdd-7203926856ca"), "Modérateur" },
-                    { new Guid("7c22c36c-3438-49a2-85f2-c834c5dd8882"), "Admin" },
-                    { new Guid("9bcadcb3-a539-4522-a86d-2460def47c30"), "Responsable" }
+                    { new Guid("0ddec27e-c80e-4f34-9e48-71b78f80aef3"), "Modérateur" },
+                    { new Guid("0f041d01-7d02-4f8d-a4ca-c29d6dd61577"), "Admin" },
+                    { new Guid("c5acf910-074e-4257-ad6a-2c8641c9cb7e"), "Responsable" },
+                    { new Guid("e878ecd6-3762-4a9b-b86d-25f24dd48675"), "Assistant" }
                 });
 
             migrationBuilder.InsertData(
@@ -323,10 +289,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("163460ef-5982-49a8-a803-0ef38cdf1b24"), "Expédiée" },
-                    { new Guid("60c026c3-cf81-453a-a195-c01f853531a0"), "Livrée" },
-                    { new Guid("7c345959-e697-4e0b-b750-c1237ae23ee0"), "Préparée" },
-                    { new Guid("f98f64bf-db7a-4139-94fb-d64777f1d458"), "En Préparation" }
+                    { new Guid("43578d65-ec66-4b5f-97c1-31d95cea3c7f"), "En Préparation" },
+                    { new Guid("619abd65-43c1-44b4-a91d-f0e2aaa53aa2"), "Expédiée" },
+                    { new Guid("91e22e3a-8c2b-4f78-94cb-2ece675e7393"), "Préparée" },
+                    { new Guid("b3e06419-dc0a-4c66-bd32-bf82dfb98c17"), "Livrée" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -410,11 +376,6 @@ namespace backend_tpgk.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RueVille_VillesUuid",
-                table: "RueVille",
-                column: "VillesUuid");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_status_name",
                 table: "status",
                 column: "name",
@@ -435,16 +396,6 @@ namespace backend_tpgk.Migrations
                 name: "IX_Utilisateurs_RoleUuid",
                 table: "Utilisateurs",
                 column: "RoleUuid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Utilisateurs_VilleUuid",
-                table: "Utilisateurs",
-                column: "VilleUuid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_villes_PaysUuid",
-                table: "villes",
-                column: "PaysUuid");
         }
 
         /// <inheritdoc />
@@ -458,9 +409,6 @@ namespace backend_tpgk.Migrations
 
             migrationBuilder.DropTable(
                 name: "CommandeUtilisateur");
-
-            migrationBuilder.DropTable(
-                name: "RueVille");
 
             migrationBuilder.DropTable(
                 name: "produit");
@@ -484,13 +432,13 @@ namespace backend_tpgk.Migrations
                 name: "status");
 
             migrationBuilder.DropTable(
+                name: "pays");
+
+            migrationBuilder.DropTable(
                 name: "rues");
 
             migrationBuilder.DropTable(
                 name: "villes");
-
-            migrationBuilder.DropTable(
-                name: "pays");
         }
     }
 }

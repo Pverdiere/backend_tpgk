@@ -23,11 +23,6 @@ namespace backend_tpgk.Models
         [Column("codePostal")]
         public required string CodePostal {get; set;}
 
-        [Column("paysId")]
-        public required Pays Pays {get; set;}
-
-        public required ICollection<Rue> Rues {get; set;}
-
-        public ICollection<Utilisateur>? Utilisateurs {get; set;}
+        public ICollection<Adresse>? Adresse {get; set;}
     }
 }

@@ -20,7 +20,6 @@ namespace backend_tpgk.Models
         [Column("name")]
         public required string Name {get; set;}
 
-        public ICollection<Ville>? Villes {get; set;}
         public ICollection<Adresse>? Adresses {get; set;}
     }
 }
