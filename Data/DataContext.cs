@@ -21,7 +21,7 @@ namespace backend_tpgk.Data
         public DbSet<CommandeProduit> CommandeProduit => Set<CommandeProduit>();
         public DbSet<Fabricant> Fabricant => Set<Fabricant>();
         public DbSet<Pays> Pays => Set<Pays>();
-        public DbSet<Produit> Produits => Set<Produit>();
+        public DbSet<Produit> Produit => Set<Produit>();
         public DbSet<Role> Role => Set<Role>();
         public DbSet<Rue> Rue => Set<Rue>();
         public DbSet<Status> Status => Set<Status>();

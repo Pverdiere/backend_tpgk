@@ -21,5 +21,8 @@ namespace backend_tpgk.Dtos
         public float? Poids {get; set;}
         public int? Capacite {get; set;}
         public string? Description {get; set;}
+        public string? Couleur {get; set;}
+        public FormFile? File {get; set;}
+        public Fabricant? Fabricant {get; set;}
     }
 }

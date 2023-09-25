@@ -40,7 +40,7 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("enable")]
-        public required bool Enable {get; set;}
+        public required bool Enable {get; set;} = true;
 
         [Required]
         [Column("hauteur")]
