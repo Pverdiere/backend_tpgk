@@ -19,7 +19,6 @@ namespace backend_tpgk.Services.VilleService
         public async Task<ServiceResponse<Ville>> AddVille(Ville newVille)
         {
             ServiceResponse<Ville> serviceResponse = new();
-            System.Diagnostics.Debug.WriteLine(newVille);
             try{
                 await _context.Ville.AddAsync(newVille);
                 await _context.SaveChangesAsync();

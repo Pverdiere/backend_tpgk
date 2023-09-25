@@ -12,8 +12,8 @@ using backend_tpgk.Data;
 namespace backend_tpgk.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230922080826_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230925140238_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,22 +317,22 @@ namespace backend_tpgk.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("0f041d01-7d02-4f8d-a4ca-c29d6dd61577"),
+                            Uuid = new Guid("86f76dd2-6545-4809-991b-9957030bf6ea"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Uuid = new Guid("c5acf910-074e-4257-ad6a-2c8641c9cb7e"),
+                            Uuid = new Guid("110578da-7d2a-46a7-b689-6f9b40f11662"),
                             Name = "Responsable"
                         },
                         new
                         {
-                            Uuid = new Guid("e878ecd6-3762-4a9b-b86d-25f24dd48675"),
+                            Uuid = new Guid("3397fdc0-fbdf-4538-9055-01deb0217d93"),
                             Name = "Assistant"
                         },
                         new
                         {
-                            Uuid = new Guid("0ddec27e-c80e-4f34-9e48-71b78f80aef3"),
+                            Uuid = new Guid("8a7be450-4bb7-403f-b380-651bcf2a05c3"),
                             Name = "Modérateur"
                         });
                 });
@@ -379,22 +379,22 @@ namespace backend_tpgk.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("43578d65-ec66-4b5f-97c1-31d95cea3c7f"),
+                            Uuid = new Guid("0a475452-a260-4f11-9ab7-06738f361626"),
                             Name = "En Préparation"
                         },
                         new
                         {
-                            Uuid = new Guid("91e22e3a-8c2b-4f78-94cb-2ece675e7393"),
+                            Uuid = new Guid("8d6be3fb-f9e0-473d-983c-4b86c083ea81"),
                             Name = "Préparée"
                         },
                         new
                         {
-                            Uuid = new Guid("619abd65-43c1-44b4-a91d-f0e2aaa53aa2"),
+                            Uuid = new Guid("b480f0c2-a6fb-4b1b-9cc4-a39b187f2791"),
                             Name = "Expédiée"
                         },
                         new
                         {
-                            Uuid = new Guid("b3e06419-dc0a-4c66-bd32-bf82dfb98c17"),
+                            Uuid = new Guid("f112509f-072c-4a10-a76b-98d02e42910a"),
                             Name = "Livrée"
                         });
                 });

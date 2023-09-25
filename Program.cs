@@ -33,6 +33,10 @@ builder.Services.AddScoped<ICommandeService, CommandeService>();
 builder.Services.AddScoped<ICommandeProduitService, CommandeProduitService>();
 builder.Services.AddScoped<IFabricantService, FabricantService>();
 builder.Services.AddScoped<IPaysService, PaysService>();
+builder.Services.AddScoped<IProduitService, ProduitService>();
+builder.Services.AddScoped<IRueService, RueService>();
+builder.Services.AddScoped<IUtilisateurService, UtilisateurService>();
+builder.Services.AddScoped<IVilleService, VilleService>();
 
 var app = builder.Build();
 
