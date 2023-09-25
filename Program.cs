@@ -10,6 +10,7 @@ global using backend_tpgk.Services.CommandeProduitService;
 global using backend_tpgk.Services.FabricantService;
 global using backend_tpgk.Services.PaysService;
 global using backend_tpgk.Services.ProduitService;
+global using backend_tpgk.Services.RueService;
 
 var builder = WebApplication.CreateBuilder(args);
 
