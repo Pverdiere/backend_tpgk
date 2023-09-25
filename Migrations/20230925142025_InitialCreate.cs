@@ -208,7 +208,7 @@ namespace backend_tpgk.Migrations
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     enable = table.Column<bool>(type: "bit", nullable: false),
                     RoleUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdresseUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AdresseUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,10 +278,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("110578da-7d2a-46a7-b689-6f9b40f11662"), "Responsable" },
-                    { new Guid("3397fdc0-fbdf-4538-9055-01deb0217d93"), "Assistant" },
-                    { new Guid("86f76dd2-6545-4809-991b-9957030bf6ea"), "Admin" },
-                    { new Guid("8a7be450-4bb7-403f-b380-651bcf2a05c3"), "Modérateur" }
+                    { new Guid("222d983f-ac95-4268-912e-1dea73a396f0"), "Responsable" },
+                    { new Guid("72a3314a-992d-45ea-b51d-a9804a16a019"), "Modérateur" },
+                    { new Guid("87c2f9d3-f370-4689-8b10-5d7c2b21efb2"), "Assistant" },
+                    { new Guid("bbbdd398-b1bb-4865-9ba0-5c36d623d596"), "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -289,10 +289,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("0a475452-a260-4f11-9ab7-06738f361626"), "En Préparation" },
-                    { new Guid("8d6be3fb-f9e0-473d-983c-4b86c083ea81"), "Préparée" },
-                    { new Guid("b480f0c2-a6fb-4b1b-9cc4-a39b187f2791"), "Expédiée" },
-                    { new Guid("f112509f-072c-4a10-a76b-98d02e42910a"), "Livrée" }
+                    { new Guid("2ec939a9-3771-4f31-b8a3-796d786e843d"), "En Préparation" },
+                    { new Guid("37094d9e-c8b3-4637-be0f-e8a03b9391bb"), "Préparée" },
+                    { new Guid("cae85415-97c3-439c-937e-7af0b9177689"), "Livrée" },
+                    { new Guid("eebdec0c-d151-40cf-8881-a9b849bd7d1b"), "Expédiée" }
                 });
 
             migrationBuilder.CreateIndex(

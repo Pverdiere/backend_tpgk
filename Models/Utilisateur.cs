@@ -52,7 +52,7 @@ namespace backend_tpgk.Models
         public required Role Role {get; set;}
 
         [Column("adresseId")]
-        public required Adresse Adresse {get; set;}
+        public Adresse? Adresse {get; set;}
 
         public List<Commande>? Commandes {get; set;}
 

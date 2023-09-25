@@ -12,7 +12,7 @@ using backend_tpgk.Data;
 namespace backend_tpgk.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230925140238_InitialCreate")]
+    [Migration("20230925142025_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -317,22 +317,22 @@ namespace backend_tpgk.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("86f76dd2-6545-4809-991b-9957030bf6ea"),
+                            Uuid = new Guid("bbbdd398-b1bb-4865-9ba0-5c36d623d596"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Uuid = new Guid("110578da-7d2a-46a7-b689-6f9b40f11662"),
+                            Uuid = new Guid("222d983f-ac95-4268-912e-1dea73a396f0"),
                             Name = "Responsable"
                         },
                         new
                         {
-                            Uuid = new Guid("3397fdc0-fbdf-4538-9055-01deb0217d93"),
+                            Uuid = new Guid("87c2f9d3-f370-4689-8b10-5d7c2b21efb2"),
                             Name = "Assistant"
                         },
                         new
                         {
-                            Uuid = new Guid("8a7be450-4bb7-403f-b380-651bcf2a05c3"),
+                            Uuid = new Guid("72a3314a-992d-45ea-b51d-a9804a16a019"),
                             Name = "Modérateur"
                         });
                 });
@@ -379,22 +379,22 @@ namespace backend_tpgk.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("0a475452-a260-4f11-9ab7-06738f361626"),
+                            Uuid = new Guid("2ec939a9-3771-4f31-b8a3-796d786e843d"),
                             Name = "En Préparation"
                         },
                         new
                         {
-                            Uuid = new Guid("8d6be3fb-f9e0-473d-983c-4b86c083ea81"),
+                            Uuid = new Guid("37094d9e-c8b3-4637-be0f-e8a03b9391bb"),
                             Name = "Préparée"
                         },
                         new
                         {
-                            Uuid = new Guid("b480f0c2-a6fb-4b1b-9cc4-a39b187f2791"),
+                            Uuid = new Guid("eebdec0c-d151-40cf-8881-a9b849bd7d1b"),
                             Name = "Expédiée"
                         },
                         new
                         {
-                            Uuid = new Guid("f112509f-072c-4a10-a76b-98d02e42910a"),
+                            Uuid = new Guid("cae85415-97c3-439c-937e-7af0b9177689"),
                             Name = "Livrée"
                         });
                 });
@@ -406,7 +406,7 @@ namespace backend_tpgk.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("AdresseUuid")
+                    b.Property<Guid?>("AdresseUuid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birthday")
@@ -589,8 +589,7 @@ namespace backend_tpgk.Migrations
                     b.HasOne("backend_tpgk.Models.Adresse", "Adresse")
                         .WithMany("Utilisateurs")
                         .HasForeignKey("AdresseUuid")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("backend_tpgk.Models.Role", "Role")
                         .WithMany("Utilisateurs")
