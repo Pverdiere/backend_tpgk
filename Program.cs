@@ -12,6 +12,7 @@ global using backend_tpgk.Services.PaysService;
 global using backend_tpgk.Services.ProduitService;
 global using backend_tpgk.Services.RueService;
 global using backend_tpgk.Services.UtilisateurService;
+global using backend_tpgk.Services.VilleService;
 
 var builder = WebApplication.CreateBuilder(args);
 
