@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using backend_tpgk.Dtos;
+using Isopoh.Cryptography.Argon2;
+
 
 namespace backend_tpgk.Services.UtilisateurService
 {
@@ -20,7 +22,7 @@ namespace backend_tpgk.Services.UtilisateurService
         public async Task<ServiceResponse<Utilisateur>> AddUtilisateur(Utilisateur newUtilisateur)
         {
             ServiceResponse<Utilisateur> serviceResponse = new();
-            System.Diagnostics.Debug.WriteLine(newUtilisateur);
+            newUtilisateur.Password = Argon2.Hash(newUtilisateur.Password);
             try{
                 await _context.Utilisateur.AddAsync(newUtilisateur);
                 await _context.SaveChangesAsync();
