@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using backend_tpgk.Dtos;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace backend_tpgk.Services.ProduitService
@@ -22,32 +23,39 @@ namespace backend_tpgk.Services.ProduitService
         {
             ServiceResponse<Produit> serviceResponse = new();
             try{
-                Produit produit = new(){
-                    Code = newProduit.Code!,
-                    Name = newProduit.Name!,
-                    Prix = (float)newProduit.Prix!,
-                    Promotion = (float)newProduit.Promotion!,
-                    Hauteur = (float)newProduit.Hauteur!,
-                    Largeur = (float)newProduit.Largeur!,
-                    Longueur = (float)newProduit.Longueur!,
-                    Poids = (float)newProduit.Poids!,
-                    Capacite = (int)newProduit.Capacite!,
-                    Description = newProduit.Description!,
-                    Couleur = newProduit.Couleur!,
-                    UrlImg = "",
-                    Fabricant = newProduit.Fabricant!,
-                    CreatedAt = DateTime.Now,
-                    Enable = true
-                };
+                Fabricant? dbFabricant = await _context.Fabricant.Where(f => f.Uuid == newProduit.FabricantUuid).FirstOrDefaultAsync();
+                if(dbFabricant is null){
+                    serviceResponse.Message = "Le fabricant sélectionné n'existe pas";
+                    serviceResponse.Success = false;
+                }else{
+                    Produit produit = new(){
+                        Code = newProduit.Code!,
+                        Name = newProduit.Name!,
+                        Prix = (float)newProduit.Prix!,
+                        Promotion = (float)newProduit.Promotion!,
+                        Hauteur = (float)newProduit.Hauteur!,
+                        Largeur = (float)newProduit.Largeur!,
+                        Longueur = (float)newProduit.Longueur!,
+                        Poids = (float)newProduit.Poids!,
+                        Capacite = (int)newProduit.Capacite!,
+                        Description = newProduit.Description!,
+                        Couleur = newProduit.Couleur!,
+                        UrlImg = "",
+                        FabricantUuid = (Guid)newProduit.FabricantUuid!,
+                        CreatedAt = DateTime.Now,
+                        Enable = true
+                    };
 
-                string filePath = $"../../img/{produit.Uuid}";
-                produit.UrlImg = filePath;
-                FileStream fs = File.Create(filePath);
-                newProduit.File?.CopyTo(fs);
-            
-                await _context.Produit.AddAsync(produit);
-                await _context.SaveChangesAsync();
-                serviceResponse.Data = produit;
+                    string filePath = $"../../img/{produit.Uuid}";
+                    produit.UrlImg = filePath;
+                    FileStream fs = File.Create(filePath);
+                    newProduit.File?.CopyTo(fs);
+                
+                    await _context.Produit.AddAsync(produit);
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = produit;
+                }
+                
             }catch(Exception ex){
                 serviceResponse.Message = ex.Message;
                 serviceResponse.Success = false;

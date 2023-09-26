@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace backend_tpgk.Models
 {
@@ -20,6 +21,7 @@ namespace backend_tpgk.Models
         [Column("name")]
         public required string Name {get; set;}
 
+        [JsonIgnore]
         public List<Utilisateur>? Utilisateurs {get; set;}
     }
 }

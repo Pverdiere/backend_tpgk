@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace backend_tpgk.Models
 {
@@ -17,16 +18,19 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("createdAt")]
-        public required DateTime CreatedAt {get; set;} = DateTime.Now;
+        public DateTime CreatedAt {get; set;} = DateTime.Now;
 
         [Column("updatedAt")]
         public DateTime? UpdatedAt {get; set;}
 
         [Column("statusId")]
-        public required Status Status {get; set;}
+        public Guid StatusUuid {get; set;}
+        public Status? Status {get; set;}
 
+        [JsonIgnore]
         public List<Utilisateur>? Utilisateurs {get; set;}
 
+        [JsonIgnore]
         public List<CommandeProduit>? CommandeProduits {get; set;}
     }
 }

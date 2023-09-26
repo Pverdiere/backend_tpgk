@@ -8,8 +8,8 @@ namespace backend_tpgk.Dtos
 {
     public class CommandeProduitDtos
     {
-        public Commande? Commande {get; set;}
-        public Produit? Produit {get; set;}
+        public Guid? CommandeUuid {get; set;}
+        public Guid? ProduitUuid {get; set;}
         public float? Prix {get; set;}
         public int? Quantity {get; set;}
         public float? Promotion {get; set;}

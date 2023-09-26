@@ -16,10 +16,12 @@ namespace backend_tpgk.Models
         public Guid Uuid {get; set;} = Guid.NewGuid();
 
         [Column("commandeId")]
-        public required Commande Commande {get; set;}
+        public Guid CommandeUuid {get; set;}
+        public Commande? Commande {get; set;}
 
         [Column("produitId")]
-        public required Produit Produit {get; set;}
+        public Guid ProduitUuid {get; set;}
+        public Produit? Produit {get; set;}
 
         [Required]
         [Column("prix")]

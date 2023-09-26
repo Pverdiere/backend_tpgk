@@ -53,18 +53,21 @@ namespace backend_tpgk.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("number");
 
-                    b.Property<Guid>("PaysUuid")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("PaysId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("paysId");
 
                     b.Property<Guid>("RueUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("rueId");
 
                     b.Property<Guid>("VilleUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("villeId");
 
                     b.HasKey("Uuid");
 
-                    b.HasIndex("PaysUuid");
+                    b.HasIndex("PaysId");
 
                     b.HasIndex("RueUuid");
 
@@ -90,10 +93,12 @@ namespace backend_tpgk.Migrations
                         .HasColumnName("createdAt");
 
                     b.Property<Guid>("ProduitUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ProduitId");
 
                     b.Property<Guid>("UtilisateurUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("utilisateurId");
 
                     b.Property<bool?>("Validation")
                         .HasColumnType("bit")
@@ -120,7 +125,8 @@ namespace backend_tpgk.Migrations
                         .HasColumnName("createdAt");
 
                     b.Property<Guid>("StatusUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("statusId");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2")
@@ -141,14 +147,16 @@ namespace backend_tpgk.Migrations
                         .HasColumnName("id");
 
                     b.Property<Guid>("CommandeUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("commandeId");
 
                     b.Property<float>("Prix")
                         .HasColumnType("real")
                         .HasColumnName("prix");
 
                     b.Property<Guid>("ProduitUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("produitId");
 
                     b.Property<float?>("Promotion")
                         .HasColumnType("real")
@@ -242,7 +250,8 @@ namespace backend_tpgk.Migrations
                         .HasColumnName("enable");
 
                     b.Property<Guid>("FabricantUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("fabricantId");
 
                     b.Property<float>("Hauteur")
                         .HasColumnType("real")
@@ -314,22 +323,22 @@ namespace backend_tpgk.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("bbbdd398-b1bb-4865-9ba0-5c36d623d596"),
+                            Uuid = new Guid("aa6d0382-adae-465a-89ba-c9945def9226"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Uuid = new Guid("222d983f-ac95-4268-912e-1dea73a396f0"),
+                            Uuid = new Guid("dcf7380b-c21b-47b2-acfe-1999b16ca553"),
                             Name = "Responsable"
                         },
                         new
                         {
-                            Uuid = new Guid("87c2f9d3-f370-4689-8b10-5d7c2b21efb2"),
+                            Uuid = new Guid("5a82f657-9ece-4e06-8e7c-51e598554ddf"),
                             Name = "Assistant"
                         },
                         new
                         {
-                            Uuid = new Guid("72a3314a-992d-45ea-b51d-a9804a16a019"),
+                            Uuid = new Guid("f207b07e-cac0-43e4-8e59-672c97b209b4"),
                             Name = "Modérateur"
                         });
                 });
@@ -376,22 +385,22 @@ namespace backend_tpgk.Migrations
                     b.HasData(
                         new
                         {
-                            Uuid = new Guid("2ec939a9-3771-4f31-b8a3-796d786e843d"),
+                            Uuid = new Guid("0b7a6853-6078-4665-aa9d-c4f1be736ec4"),
                             Name = "En Préparation"
                         },
                         new
                         {
-                            Uuid = new Guid("37094d9e-c8b3-4637-be0f-e8a03b9391bb"),
+                            Uuid = new Guid("b56c5c65-54f8-4ca2-bbaf-969700a8c960"),
                             Name = "Préparée"
                         },
                         new
                         {
-                            Uuid = new Guid("eebdec0c-d151-40cf-8881-a9b849bd7d1b"),
+                            Uuid = new Guid("8594381d-b3d9-4bd4-9016-4e568c06ea85"),
                             Name = "Expédiée"
                         },
                         new
                         {
-                            Uuid = new Guid("cae85415-97c3-439c-937e-7af0b9177689"),
+                            Uuid = new Guid("7d700299-5739-4da3-9581-d8b37e2201e4"),
                             Name = "Livrée"
                         });
                 });
@@ -404,7 +413,8 @@ namespace backend_tpgk.Migrations
                         .HasColumnName("id");
 
                     b.Property<Guid?>("AdresseUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("adresseId");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2")
@@ -439,7 +449,8 @@ namespace backend_tpgk.Migrations
                         .HasColumnName("password");
 
                     b.Property<Guid>("RoleUuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("roleId");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2")
@@ -498,7 +509,7 @@ namespace backend_tpgk.Migrations
                 {
                     b.HasOne("backend_tpgk.Models.Pays", "Pays")
                         .WithMany("Adresses")
-                        .HasForeignKey("PaysUuid")
+                        .HasForeignKey("PaysId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

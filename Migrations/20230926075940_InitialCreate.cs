@@ -106,14 +106,14 @@ namespace backend_tpgk.Migrations
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     couleur = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     urlImg = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FabricantUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    fabricantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_produit", x => x.id);
                     table.ForeignKey(
-                        name: "FK_produit_fabricant_FabricantUuid",
-                        column: x => x.FabricantUuid,
+                        name: "FK_produit_fabricant_fabricantId",
+                        column: x => x.fabricantId,
                         principalTable: "fabricant",
                         principalColumn: "id");
                 });
@@ -125,14 +125,14 @@ namespace backend_tpgk.Migrations
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StatusUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    statusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_commande", x => x.id);
                     table.ForeignKey(
-                        name: "FK_commande_status_StatusUuid",
-                        column: x => x.StatusUuid,
+                        name: "FK_commande_status_statusId",
+                        column: x => x.statusId,
                         principalTable: "status",
                         principalColumn: "id");
                 });
@@ -144,26 +144,26 @@ namespace backend_tpgk.Migrations
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     complement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RueUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VilleUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PaysUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    rueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    villeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    paysId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_adresse", x => x.id);
                     table.ForeignKey(
-                        name: "FK_adresse_pays_PaysUuid",
-                        column: x => x.PaysUuid,
+                        name: "FK_adresse_pays_paysId",
+                        column: x => x.paysId,
                         principalTable: "pays",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_adresse_rues_RueUuid",
-                        column: x => x.RueUuid,
+                        name: "FK_adresse_rues_rueId",
+                        column: x => x.rueId,
                         principalTable: "rues",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_adresse_villes_VilleUuid",
-                        column: x => x.VilleUuid,
+                        name: "FK_adresse_villes_villeId",
+                        column: x => x.villeId,
                         principalTable: "villes",
                         principalColumn: "id");
                 });
@@ -173,8 +173,8 @@ namespace backend_tpgk.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CommandeUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProduitUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    commandeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    produitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     prix = table.Column<float>(type: "real", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
                     promotion = table.Column<float>(type: "real", nullable: true)
@@ -183,13 +183,13 @@ namespace backend_tpgk.Migrations
                 {
                     table.PrimaryKey("PK_commandeProduit", x => x.id);
                     table.ForeignKey(
-                        name: "FK_commandeProduit_commande_CommandeUuid",
-                        column: x => x.CommandeUuid,
+                        name: "FK_commandeProduit_commande_commandeId",
+                        column: x => x.commandeId,
                         principalTable: "commande",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_commandeProduit_produit_ProduitUuid",
-                        column: x => x.ProduitUuid,
+                        name: "FK_commandeProduit_produit_produitId",
+                        column: x => x.produitId,
                         principalTable: "produit",
                         principalColumn: "id");
                 });
@@ -207,20 +207,20 @@ namespace backend_tpgk.Migrations
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     enable = table.Column<bool>(type: "bit", nullable: false),
-                    RoleUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdresseUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    roleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    adresseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Utilisateurs", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Utilisateurs_adresse_AdresseUuid",
-                        column: x => x.AdresseUuid,
+                        name: "FK_Utilisateurs_adresse_adresseId",
+                        column: x => x.adresseId,
                         principalTable: "adresse",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Utilisateurs_roles_RoleUuid",
-                        column: x => x.RoleUuid,
+                        name: "FK_Utilisateurs_roles_roleId",
+                        column: x => x.roleId,
                         principalTable: "roles",
                         principalColumn: "id");
                 });
@@ -233,20 +233,20 @@ namespace backend_tpgk.Migrations
                     content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     createdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     validation = table.Column<bool>(type: "bit", nullable: true),
-                    UtilisateurUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProduitUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    utilisateurId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProduitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_avis", x => x.id);
                     table.ForeignKey(
-                        name: "FK_avis_Utilisateurs_UtilisateurUuid",
-                        column: x => x.UtilisateurUuid,
+                        name: "FK_avis_Utilisateurs_utilisateurId",
+                        column: x => x.utilisateurId,
                         principalTable: "Utilisateurs",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_avis_produit_ProduitUuid",
-                        column: x => x.ProduitUuid,
+                        name: "FK_avis_produit_ProduitId",
+                        column: x => x.ProduitId,
                         principalTable: "produit",
                         principalColumn: "id");
                 });
@@ -278,10 +278,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("222d983f-ac95-4268-912e-1dea73a396f0"), "Responsable" },
-                    { new Guid("72a3314a-992d-45ea-b51d-a9804a16a019"), "Modérateur" },
-                    { new Guid("87c2f9d3-f370-4689-8b10-5d7c2b21efb2"), "Assistant" },
-                    { new Guid("bbbdd398-b1bb-4865-9ba0-5c36d623d596"), "Admin" }
+                    { new Guid("5a82f657-9ece-4e06-8e7c-51e598554ddf"), "Assistant" },
+                    { new Guid("aa6d0382-adae-465a-89ba-c9945def9226"), "Admin" },
+                    { new Guid("dcf7380b-c21b-47b2-acfe-1999b16ca553"), "Responsable" },
+                    { new Guid("f207b07e-cac0-43e4-8e59-672c97b209b4"), "Modérateur" }
                 });
 
             migrationBuilder.InsertData(
@@ -289,51 +289,51 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("2ec939a9-3771-4f31-b8a3-796d786e843d"), "En Préparation" },
-                    { new Guid("37094d9e-c8b3-4637-be0f-e8a03b9391bb"), "Préparée" },
-                    { new Guid("cae85415-97c3-439c-937e-7af0b9177689"), "Livrée" },
-                    { new Guid("eebdec0c-d151-40cf-8881-a9b849bd7d1b"), "Expédiée" }
+                    { new Guid("0b7a6853-6078-4665-aa9d-c4f1be736ec4"), "En Préparation" },
+                    { new Guid("7d700299-5739-4da3-9581-d8b37e2201e4"), "Livrée" },
+                    { new Guid("8594381d-b3d9-4bd4-9016-4e568c06ea85"), "Expédiée" },
+                    { new Guid("b56c5c65-54f8-4ca2-bbaf-969700a8c960"), "Préparée" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_adresse_PaysUuid",
+                name: "IX_adresse_paysId",
                 table: "adresse",
-                column: "PaysUuid");
+                column: "paysId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_adresse_RueUuid",
+                name: "IX_adresse_rueId",
                 table: "adresse",
-                column: "RueUuid");
+                column: "rueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_adresse_VilleUuid",
+                name: "IX_adresse_villeId",
                 table: "adresse",
-                column: "VilleUuid");
+                column: "villeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_avis_ProduitUuid",
+                name: "IX_avis_ProduitId",
                 table: "avis",
-                column: "ProduitUuid");
+                column: "ProduitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_avis_UtilisateurUuid",
+                name: "IX_avis_utilisateurId",
                 table: "avis",
-                column: "UtilisateurUuid");
+                column: "utilisateurId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_commande_StatusUuid",
+                name: "IX_commande_statusId",
                 table: "commande",
-                column: "StatusUuid");
+                column: "statusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_commandeProduit_CommandeUuid",
+                name: "IX_commandeProduit_commandeId",
                 table: "commandeProduit",
-                column: "CommandeUuid");
+                column: "commandeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_commandeProduit_ProduitUuid",
+                name: "IX_commandeProduit_produitId",
                 table: "commandeProduit",
-                column: "ProduitUuid");
+                column: "produitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommandeUtilisateur_UtilisateursUuid",
@@ -359,9 +359,9 @@ namespace backend_tpgk.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_produit_FabricantUuid",
+                name: "IX_produit_fabricantId",
                 table: "produit",
-                column: "FabricantUuid");
+                column: "fabricantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_roles_name",
@@ -382,9 +382,9 @@ namespace backend_tpgk.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Utilisateurs_AdresseUuid",
+                name: "IX_Utilisateurs_adresseId",
                 table: "Utilisateurs",
-                column: "AdresseUuid");
+                column: "adresseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Utilisateurs_email",
@@ -393,9 +393,9 @@ namespace backend_tpgk.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Utilisateurs_RoleUuid",
+                name: "IX_Utilisateurs_roleId",
                 table: "Utilisateurs",
-                column: "RoleUuid");
+                column: "roleId");
         }
 
         /// <inheritdoc />

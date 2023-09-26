@@ -10,7 +10,7 @@ namespace backend_tpgk.Dtos
     {
         public string? Content {get; set;}
         public bool? Validation {get; set;}
-        public Utilisateur? Utilisateur {get; set;}
-        public Produit? Produit {get; set;}
+        public Guid? UtilisateurUuid {get; set;}
+        public Guid? ProduitUuid {get; set;}
     }
 }

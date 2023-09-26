@@ -21,15 +21,17 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("createdAt")]
-        public required DateTime CreatedAt {get; set;} = DateTime.Now;
+        public DateTime CreatedAt {get; set;} = DateTime.Now;
 
         [Column("validation")]
         public bool? Validation {get; set;}
 
         [Column("utilisateurId")]
-        public required Utilisateur Utilisateur {get; set;}
+        public Guid UtilisateurUuid {get; set;}
+        public Utilisateur? Utilisateur {get; set;}
 
         [Column("ProduitId")]
-        public required Produit Produit {get; set;}
+        public Guid ProduitUuid {get; set;}
+        public Produit? Produit {get; set;}
     }
 }

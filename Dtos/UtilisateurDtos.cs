@@ -15,7 +15,7 @@ namespace backend_tpgk.Dtos
         public DateTime? Birthday {get; set;}
         public DateTime UpdatedAt {get; set;} = DateTime.Now;
         public bool? Enabled {get; set;}
-        public Role? Role {get; set;}
-        public Adresse? Adresse {get; set;}
+        public Guid? RoleUuid {get; set;}
+        public Guid? AdresseUuid {get; set;}
     }
 }

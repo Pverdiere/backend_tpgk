@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace backend_tpgk.Models
 {
@@ -33,7 +34,7 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("createdAt")]
-        public required DateTime CreatedAt {get; set;} = DateTime.Now;
+        public DateTime CreatedAt {get; set;} = DateTime.Now;
 
         [Column("updatedAt")]
         public DateTime? UpdatedAt {get; set;}
@@ -76,9 +77,12 @@ namespace backend_tpgk.Models
 
         [Required]
         [Column("fabricantId")]
-        public required Fabricant Fabricant {get; set;}
+        public Guid FabricantUuid {get; set;}
+        public Fabricant? Fabricant {get; set;}
 
+        [JsonIgnore]
         public List<Avis>? Utilisateurs {get; set;}
+        [JsonIgnore]
         public List<CommandeProduit>? CommandeProduit {get; set;}
     }
 }

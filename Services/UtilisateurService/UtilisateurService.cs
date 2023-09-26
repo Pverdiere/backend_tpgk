@@ -23,13 +23,19 @@ namespace backend_tpgk.Services.UtilisateurService
         {
             ServiceResponse<Utilisateur> serviceResponse = new();
             newUtilisateur.Password = Argon2.Hash(newUtilisateur.Password);
-            try{
-                await _context.Utilisateur.AddAsync(newUtilisateur);
-                await _context.SaveChangesAsync();
-                serviceResponse.Data = newUtilisateur;
-            }catch(Exception ex){
-                serviceResponse.Message = ex.Message;
+            Role? dbRole = await _context.Role.Where(r => r.Uuid == newUtilisateur.RoleUuid).FirstOrDefaultAsync();
+            if(dbRole is null){
+                serviceResponse.Message = "Le role sélectionné n'éxiste pas";
                 serviceResponse.Success = false;
+            }else{
+                try{
+                    await _context.Utilisateur.AddAsync(newUtilisateur);
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = newUtilisateur;
+                }catch(Exception ex){
+                    serviceResponse.Message = ex.Message;
+                    serviceResponse.Success = false;
+                }
             }
             
             return serviceResponse;
@@ -57,7 +63,7 @@ namespace backend_tpgk.Services.UtilisateurService
         public async Task<ServiceResponse<List<Utilisateur>>> GetAllUtilisateurs()
         {
             ServiceResponse<List<Utilisateur>> serviceResponse = new();
-            List<Utilisateur> dbUtilisateur = await _context.Utilisateur.ToListAsync();
+            List<Utilisateur> dbUtilisateur = await _context.Utilisateur.Include(u => u.Role).ToListAsync();
             serviceResponse.Data = dbUtilisateur;
             return serviceResponse;
         }
@@ -65,7 +71,7 @@ namespace backend_tpgk.Services.UtilisateurService
         public async Task<ServiceResponse<Utilisateur>> GetUtilisateurById(Guid uuid)
         {
             ServiceResponse<Utilisateur> serviceResponse = new();
-            Utilisateur? dbUtilisateur = await _context.Utilisateur.Where(r => r.Uuid == uuid).FirstOrDefaultAsync();
+            Utilisateur? dbUtilisateur = await _context.Utilisateur.Where(r => r.Uuid == uuid).Include(u => u.Role).FirstOrDefaultAsync();
             if(dbUtilisateur is null){
                 serviceResponse.Message = "Utilisateur not found";
             }else{

@@ -78,10 +78,6 @@ namespace backend_tpgk.Services.CommandeProduitService
             if(dbCommandeProduit is null){
                 serviceResponse.Message = "CommandeProduit not found";
             }else{
-                if(updatedCommandeProduit.Produit is not null){
-                    dbCommandeProduit.Produit = updatedCommandeProduit.Produit;
-                }
-
                 if(updatedCommandeProduit.Quantity is not null){
                     dbCommandeProduit.Quantity = (int)updatedCommandeProduit.Quantity;
                 }
