@@ -48,17 +48,32 @@ namespace backend_tpgk.Services.ProduitService
                         Enable = true
                     };
 
-                    string[] subs = newProduit.File!.FileName.Split('.');
+                    List<string> acceptedType = new(){
+                        "image/jpeg",
+                        "image/bmp",
+                        "image/gif",
+                        "image/png",
+                        "image/tiff"
+                    };
 
-                    string filePath = $"img/{produit.Uuid}.{subs[^1]}";
-                    produit.UrlImg = filePath;
-                    FileStream fs = File.Create(filePath);
-                    newProduit.File?.CopyTo(fs);
-                    fs.Close();
-                
-                    await _context.Produit.AddAsync(produit);
-                    await _context.SaveChangesAsync();
-                    serviceResponse.Data = produit;
+                    if(!acceptedType.Contains(newProduit.File!.ContentType)){
+                        serviceResponse.Message = "Le format d'image n'est pas accepté";
+                        serviceResponse.Success = false;
+                    }else{
+                        string[] subs = newProduit.File!.FileName.Split('.');
+
+                        string filePath = $"img/{produit.Uuid}.{subs[^1]}";
+                        produit.UrlImg = filePath;
+                        FileStream fs = File.Create(filePath);
+                        newProduit.File?.CopyTo(fs);
+                        fs.Close();
+                    
+                        await _context.Produit.AddAsync(produit);
+                        await _context.SaveChangesAsync();
+                        serviceResponse.Data = produit;
+                    }
+
+                    
                 }
                 
             }catch(Exception ex){
