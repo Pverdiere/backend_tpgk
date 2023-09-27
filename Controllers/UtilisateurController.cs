@@ -1,9 +1,11 @@
 using backend_tpgk.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_tpgk.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class UtilisateurController : ControllerBase
 {
@@ -41,5 +43,11 @@ public class UtilisateurController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<ServiceResponse<Utilisateur>>> DeleteUtilisateur(Guid id){
         return Ok(await _utilisateurService.DeleteUtilisateur(id));
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<ActionResult<ServiceResponse<string>>> Login([FromBody] LoginDtos login){
+        return Ok(await _utilisateurService.Login(login));
     }
 }

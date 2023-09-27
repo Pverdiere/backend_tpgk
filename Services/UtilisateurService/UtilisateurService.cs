@@ -6,6 +6,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using backend_tpgk.Dtos;
 using Isopoh.Cryptography.Argon2;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 
 namespace backend_tpgk.Services.UtilisateurService
@@ -103,6 +107,34 @@ namespace backend_tpgk.Services.UtilisateurService
                     serviceResponse.Message = ex.Message;
                     serviceResponse.Success = false;
                 }
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<string>> Login(LoginDtos login){
+            ServiceResponse<string> serviceResponse = new();
+            Utilisateur? dbUtilisateur = await _context.Utilisateur.Where(r => r.Email == login.Email).Include(u => u.Role).FirstOrDefaultAsync();
+            if(dbUtilisateur is not null && Argon2.Verify(dbUtilisateur.Password, login.Password)){
+                Byte[] key = Encoding.ASCII.GetBytes("qsgriopghe56seg4r44qerg46es6rsgrg4g");
+                SecurityTokenDescriptor tokenDescriptor = new(){
+                    Subject = new ClaimsIdentity(new[]{
+                        new Claim("Id", dbUtilisateur.Uuid.ToString()),
+                        new Claim("Name", dbUtilisateur.Name),
+                        new Claim("Lastname", dbUtilisateur.Lastname),
+                        new Claim("Email", dbUtilisateur.Email),
+                        new Claim("Role", dbUtilisateur.RoleUuid.ToString()),
+                        new Claim("Birtday", dbUtilisateur.Birthday.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(24),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+                };
+                JwtSecurityTokenHandler tokenHandler = new();
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                string jwtToken = tokenHandler.WriteToken(token);
+                serviceResponse.Data = jwtToken;
+            }else{
+                serviceResponse.Message = "Information de connexion invalide";
+                serviceResponse.Success = false;
             }
             return serviceResponse;
         }

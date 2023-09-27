@@ -13,6 +13,10 @@ global using backend_tpgk.Services.ProduitService;
 global using backend_tpgk.Services.RueService;
 global using backend_tpgk.Services.UtilisateurService;
 global using backend_tpgk.Services.VilleService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using backend_tpgk.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +49,13 @@ builder.Services.AddCors(options => {
         .AllowAnyHeader());
 });
 
+builder.Services.AddTransient<CustomJwtBearerHandler>();
+builder.Services.AddHttpClient();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddScheme<JwtBearerOptions, CustomJwtBearerHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -58,6 +69,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

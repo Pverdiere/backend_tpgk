@@ -13,5 +13,6 @@ namespace backend_tpgk.Services.UtilisateurService
         Task<ServiceResponse<Utilisateur>> AddUtilisateur(Utilisateur newUtilisateur);
         Task<ServiceResponse<Utilisateur>> DeleteUtilisateur(Guid UuidDeletedUtilisateur);
         Task<ServiceResponse<Utilisateur>> UpdateUtilisateur(Guid uuid, UtilisateurDtos updatedUtilisateur);
+        Task<ServiceResponse<string>> Login(LoginDtos login);
     }
 }
