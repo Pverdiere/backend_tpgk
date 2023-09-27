@@ -19,14 +19,19 @@ namespace backend_tpgk.Services.CommandeService
         public async Task<ServiceResponse<Commande>> AddCommande(Commande newCommande)
         {
             ServiceResponse<Commande> serviceResponse = new();
-            System.Diagnostics.Debug.WriteLine(newCommande);
-            try{
-                await _context.Commande.AddAsync(newCommande);
-                await _context.SaveChangesAsync();
-                serviceResponse.Data = newCommande;
-            }catch(Exception ex){
-                serviceResponse.Message = ex.Message;
-                serviceResponse.Success = false;
+            Utilisateur? dbUtilisateur = await _context.Utilisateur.Where(u => u.Uuid == newCommande.UtilisateurUuid).FirstOrDefaultAsync();
+            if(dbUtilisateur is null){
+                serviceResponse.Message = "L'utilisateur n'existe pas";
+            }else{
+                try{
+                    newCommande.Utilisateurs = dbUtilisateur;
+                    await _context.Commande.AddAsync(newCommande);
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = newCommande;
+                }catch(Exception ex){
+                    serviceResponse.Message = ex.Message;
+                    serviceResponse.Success = false;
+                }
             }
             
             return serviceResponse;
@@ -81,23 +86,39 @@ namespace backend_tpgk.Services.CommandeService
                 if(updatedCommande.Status is not null) dbCommande.Status = updatedCommande.Status;
                 dbCommande.UpdatedAt = updatedCommande.UpdatedAt;
 
-                if(updatedCommande.AddCommandeProduit is not null){
-                    if(dbCommande.CommandeProduits is null){
-                        dbCommande.CommandeProduits = updatedCommande.AddCommandeProduit;
-                    }else{
-                        foreach(CommandeProduit element in updatedCommande.AddCommandeProduit){
-                            dbCommande.CommandeProduits.Add(element);
-                        }
+                if(updatedCommande.AddProduit is not null){
+                    dbCommande.CommandeProduits ??= new();
+                    foreach(AddOrRemove element in updatedCommande.AddProduit){
+                        Produit? dbProduit = await _context.Produit.Where(p => p.Uuid == element.Uuid).FirstOrDefaultAsync();
+                        if(dbProduit is not null){
+                            CommandeProduit newCommandeProduit = new(){
+                                ProduitUuid = dbProduit.Uuid,
+                                Produit = dbProduit,
+                                CommandeUuid = dbCommande.Uuid,
+                                Commande = dbCommande,
+                                Quantity = element.Quantity,
+                                Prix = dbProduit.Prix,
+                                Promotion = dbProduit.Promotion
+                            };
+                            dbCommande.CommandeProduits.Add(newCommandeProduit);
+                        } 
                     }
                 }
 
-                if(updatedCommande.RemoveCommandeProduit is not null){
+                if(updatedCommande.RemoveProduit is not null){
                     if(dbCommande.CommandeProduits is null){
                         serviceResponse.Message = "Le produit que vous essayez de supprimer n'existe pas dans cette commande.";
                     }else{
-                        foreach(CommandeProduit element in updatedCommande.RemoveCommandeProduit){
-                            int index = dbCommande.CommandeProduits.IndexOf(element);
-                            dbCommande.CommandeProduits.RemoveAt(index);
+                        foreach(AddOrRemove element in updatedCommande.RemoveProduit){
+                            Produit? dbProduit = await _context.Produit.Where(p => p.Uuid == element.Uuid).FirstOrDefaultAsync();
+                            if(dbProduit is not null){
+                                CommandeProduit? dbCommandeProduit = await _context.CommandeProduit.Where(cp => cp.CommandeUuid == dbCommande.Uuid && cp.ProduitUuid == dbProduit.Uuid).FirstOrDefaultAsync();
+                                if(dbCommandeProduit is not null){
+                                    int index = dbCommande.CommandeProduits.IndexOf(dbCommandeProduit);
+                                    dbCommande.CommandeProduits.RemoveAt(index);
+                                }
+                            }
+                            
                         }
                     }
                 }

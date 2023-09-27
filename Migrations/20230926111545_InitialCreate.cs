@@ -119,25 +119,6 @@ namespace backend_tpgk.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "commande",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    statusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_commande", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_commande_status_statusId",
-                        column: x => x.statusId,
-                        principalTable: "status",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "adresse",
                 columns: table => new
                 {
@@ -165,32 +146,6 @@ namespace backend_tpgk.Migrations
                         name: "FK_adresse_villes_villeId",
                         column: x => x.villeId,
                         principalTable: "villes",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "commandeProduit",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    commandeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    produitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    prix = table.Column<float>(type: "real", nullable: false),
-                    quantity = table.Column<int>(type: "int", nullable: false),
-                    promotion = table.Column<float>(type: "real", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_commandeProduit", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_commandeProduit_commande_commandeId",
-                        column: x => x.commandeId,
-                        principalTable: "commande",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_commandeProduit_produit_produitId",
-                        column: x => x.produitId,
-                        principalTable: "produit",
                         principalColumn: "id");
                 });
 
@@ -252,24 +207,53 @@ namespace backend_tpgk.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CommandeUtilisateur",
+                name: "commande",
                 columns: table => new
                 {
-                    CommandesUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UtilisateursUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    updatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    statusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UtilisateurUuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommandeUtilisateur", x => new { x.CommandesUuid, x.UtilisateursUuid });
+                    table.PrimaryKey("PK_commande", x => x.id);
                     table.ForeignKey(
-                        name: "FK_CommandeUtilisateur_Utilisateurs_UtilisateursUuid",
-                        column: x => x.UtilisateursUuid,
+                        name: "FK_commande_Utilisateurs_UtilisateurUuid",
+                        column: x => x.UtilisateurUuid,
                         principalTable: "Utilisateurs",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_CommandeUtilisateur_commande_CommandesUuid",
-                        column: x => x.CommandesUuid,
+                        name: "FK_commande_status_statusId",
+                        column: x => x.statusId,
+                        principalTable: "status",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "commandeProduit",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    commandeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    produitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    prix = table.Column<float>(type: "real", nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    promotion = table.Column<float>(type: "real", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_commandeProduit", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_commandeProduit_commande_commandeId",
+                        column: x => x.commandeId,
                         principalTable: "commande",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_commandeProduit_produit_produitId",
+                        column: x => x.produitId,
+                        principalTable: "produit",
                         principalColumn: "id");
                 });
 
@@ -278,10 +262,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("5a82f657-9ece-4e06-8e7c-51e598554ddf"), "Assistant" },
-                    { new Guid("aa6d0382-adae-465a-89ba-c9945def9226"), "Admin" },
-                    { new Guid("dcf7380b-c21b-47b2-acfe-1999b16ca553"), "Responsable" },
-                    { new Guid("f207b07e-cac0-43e4-8e59-672c97b209b4"), "Modérateur" }
+                    { new Guid("6b0df725-cfe8-48a5-8db7-a8c063bb6209"), "Assistant" },
+                    { new Guid("bb005b53-f0a3-4092-a690-c8a247105358"), "Modérateur" },
+                    { new Guid("d898a7dd-291e-4c68-99ec-9c5ea4aaa65d"), "Admin" },
+                    { new Guid("ea8795a7-b012-4335-bb75-88ccc5cd7b5e"), "Responsable" }
                 });
 
             migrationBuilder.InsertData(
@@ -289,10 +273,10 @@ namespace backend_tpgk.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { new Guid("0b7a6853-6078-4665-aa9d-c4f1be736ec4"), "En Préparation" },
-                    { new Guid("7d700299-5739-4da3-9581-d8b37e2201e4"), "Livrée" },
-                    { new Guid("8594381d-b3d9-4bd4-9016-4e568c06ea85"), "Expédiée" },
-                    { new Guid("b56c5c65-54f8-4ca2-bbaf-969700a8c960"), "Préparée" }
+                    { new Guid("24136cc1-25af-41e6-a84e-b6f3e8fae7ae"), "Livrée" },
+                    { new Guid("8dd0310a-5339-4bc2-899d-693ed14e21dd"), "En Préparation" },
+                    { new Guid("df7ffcdd-8345-41d6-b6db-429b722004fa"), "Préparée" },
+                    { new Guid("e37d38ce-3d33-4356-a9fd-fe0f2991a72e"), "Expédiée" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -326,6 +310,11 @@ namespace backend_tpgk.Migrations
                 column: "statusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_commande_UtilisateurUuid",
+                table: "commande",
+                column: "UtilisateurUuid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_commandeProduit_commandeId",
                 table: "commandeProduit",
                 column: "commandeId");
@@ -334,11 +323,6 @@ namespace backend_tpgk.Migrations
                 name: "IX_commandeProduit_produitId",
                 table: "commandeProduit",
                 column: "produitId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CommandeUtilisateur_UtilisateursUuid",
-                table: "CommandeUtilisateur",
-                column: "UtilisateursUuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_fabricant_name",
@@ -408,7 +392,7 @@ namespace backend_tpgk.Migrations
                 name: "commandeProduit");
 
             migrationBuilder.DropTable(
-                name: "CommandeUtilisateur");
+                name: "commande");
 
             migrationBuilder.DropTable(
                 name: "produit");
@@ -417,7 +401,7 @@ namespace backend_tpgk.Migrations
                 name: "Utilisateurs");
 
             migrationBuilder.DropTable(
-                name: "commande");
+                name: "status");
 
             migrationBuilder.DropTable(
                 name: "fabricant");
@@ -427,9 +411,6 @@ namespace backend_tpgk.Migrations
 
             migrationBuilder.DropTable(
                 name: "roles");
-
-            migrationBuilder.DropTable(
-                name: "status");
 
             migrationBuilder.DropTable(
                 name: "pays");

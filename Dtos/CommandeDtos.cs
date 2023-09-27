@@ -10,7 +10,13 @@ namespace backend_tpgk.Dtos
     {
         public DateTime UpdatedAt {get; set;} = DateTime.Now;
         public Status? Status {get; set;}
-        public List<CommandeProduit>? AddCommandeProduit {get; set;}
-        public List<CommandeProduit>? RemoveCommandeProduit {get; set;}
+        public List<AddOrRemove>? AddProduit {get; set;}
+        public List<AddOrRemove>? RemoveProduit {get; set;}
+    }
+
+    public class AddOrRemove
+    {
+        public required Guid Uuid {get; set;}
+        public required int Quantity {get; set;}
     }
 }

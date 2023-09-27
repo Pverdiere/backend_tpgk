@@ -1,4 +1,5 @@
 using backend_tpgk.Dtos;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_tpgk.Controllers;
@@ -15,13 +16,13 @@ public class ProduitController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<ServiceResponse<List<Produit>>>> GetAll()
+    public async Task<ActionResult<ServiceResponse<List<ProduitDtos>>>> GetAll()
     {
         return Ok(await _produitService.GetAllProduits());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ServiceResponse<Produit>>> GetSingle(Guid id)
+    public async Task<ActionResult<ServiceResponse<ProduitDtos>>> GetSingle(Guid id)
     {
         return Ok(await _produitService.GetProduitById(id));
     }

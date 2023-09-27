@@ -28,11 +28,12 @@ namespace backend_tpgk.Services.ProduitService
                     serviceResponse.Message = "Le fabricant sélectionné n'existe pas";
                     serviceResponse.Success = false;
                 }else{
+                    
                     Produit produit = new(){
                         Code = newProduit.Code!,
                         Name = newProduit.Name!,
                         Prix = (float)newProduit.Prix!,
-                        Promotion = (float)newProduit.Promotion!,
+                        Promotion = newProduit.Promotion,
                         Hauteur = (float)newProduit.Hauteur!,
                         Largeur = (float)newProduit.Largeur!,
                         Longueur = (float)newProduit.Longueur!,
@@ -42,14 +43,18 @@ namespace backend_tpgk.Services.ProduitService
                         Couleur = newProduit.Couleur!,
                         UrlImg = "",
                         FabricantUuid = (Guid)newProduit.FabricantUuid!,
+                        Fabricant = dbFabricant,
                         CreatedAt = DateTime.Now,
                         Enable = true
                     };
 
-                    string filePath = $"../../img/{produit.Uuid}";
+                    string[] subs = newProduit.File!.FileName.Split('.');
+
+                    string filePath = $"img/{produit.Uuid}.{subs[^1]}";
                     produit.UrlImg = filePath;
                     FileStream fs = File.Create(filePath);
                     newProduit.File?.CopyTo(fs);
+                    fs.Close();
                 
                     await _context.Produit.AddAsync(produit);
                     await _context.SaveChangesAsync();
@@ -84,22 +89,94 @@ namespace backend_tpgk.Services.ProduitService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<Produit>>> GetAllProduits()
+        public async Task<ServiceResponse<List<ProduitDtos>>> GetAllProduits()
         {
-            ServiceResponse<List<Produit>> serviceResponse = new();
+            ServiceResponse<List<ProduitDtos>> serviceResponse = new();
             List<Produit> dbProduit = await _context.Produit.ToListAsync();
-            serviceResponse.Data = dbProduit;
+            List<ProduitDtos> response = new();
+
+            foreach(Produit produit in dbProduit){
+                ProduitDtos produitDtos = new();
+                Type typeDtos = produitDtos.GetType();
+                PropertyInfo[] propertyInfoDtos = typeDtos.GetProperties();
+                Type type = produit.GetType();
+                PropertyInfo[] props = type.GetProperties();
+                List<string> exception = new()
+                {
+                    "Uuid",
+                    "Fabricant",
+                    "Utilisateurs",
+                    "CommandeProduit",
+                    "CreatedAt"
+                };
+
+                foreach(var prop in props){
+                    if(prop.GetValue(produit) is not null){
+                        if(prop.Name == "UrlImg"){
+                            FileStream fs = new(produit.UrlImg, FileMode.Open);
+                            byte[] bytes;
+                            using MemoryStream memoryStream = new();
+                            fs.CopyTo(memoryStream);
+                            bytes = memoryStream.ToArray();
+                            produitDtos.ImageBase64 = Convert.ToBase64String(bytes);
+                            fs.Close();
+                        }
+                        else{
+                            if(!exception.Contains(prop.Name)){
+                                var propChange = propertyInfoDtos.Where(r => r.Name == prop.Name).First();
+                                propChange.SetValue(produitDtos,prop.GetValue(produit));
+                            }
+                        }
+                    }
+                }
+                response.Add(produitDtos);
+            }
+            
+            serviceResponse.Data = response;
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Produit>> GetProduitById(Guid uuid)
+        public async Task<ServiceResponse<ProduitDtos>> GetProduitById(Guid uuid)
         {
-            ServiceResponse<Produit> serviceResponse = new();
+            ServiceResponse<ProduitDtos> serviceResponse = new();
             Produit? dbProduit = await _context.Produit.Where(r => r.Uuid == uuid).FirstOrDefaultAsync();
             if(dbProduit is null){
                 serviceResponse.Message = "Produit not found";
             }else{
-                serviceResponse.Data = dbProduit;
+                ProduitDtos produitDtos = new();
+                Type typeDtos = produitDtos.GetType();
+                PropertyInfo[] propertyInfoDtos = typeDtos.GetProperties();
+                Type type = dbProduit.GetType();
+                PropertyInfo[] props = type.GetProperties();
+                List<string> exception = new()
+                {
+                    "Uuid",
+                    "Fabricant",
+                    "Utilisateurs",
+                    "CommandeProduit",
+                    "CreatedAt"
+                };
+
+                foreach(var prop in props){
+                    if(prop.GetValue(dbProduit) is not null){
+                        if(prop.Name == "UrlImg"){
+                            FileStream fs = new(dbProduit.UrlImg, FileMode.Open);
+                            byte[] bytes;
+                            using MemoryStream memoryStream = new();
+                            fs.CopyTo(memoryStream);
+                            bytes = memoryStream.ToArray();
+                            produitDtos.ImageBase64 = Convert.ToBase64String(bytes);
+                            fs.Close();
+                        }
+                        else{
+                            if(!exception.Contains(prop.Name)){
+                                var propChange = propertyInfoDtos.Where(r => r.Name == prop.Name).First();
+                                propChange.SetValue(produitDtos,prop.GetValue(dbProduit));
+                            }
+                        }
+                    }
+                }
+                serviceResponse.Data = produitDtos;
             }
             return serviceResponse;
         }
@@ -122,6 +199,7 @@ namespace backend_tpgk.Services.ProduitService
                                 dbProduit.UrlImg = filePath;
                                 FileStream fs = File.Create(filePath);
                                 updatedProduit.File?.CopyTo(fs);
+                                fs.Close();
                             }else{
                                 prop.SetValue(dbProduit,prop.GetValue(updatedProduit));
                             }

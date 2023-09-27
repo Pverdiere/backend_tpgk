@@ -27,8 +27,8 @@ namespace backend_tpgk.Models
         public Guid StatusUuid {get; set;}
         public Status? Status {get; set;}
 
-        [JsonIgnore]
-        public List<Utilisateur>? Utilisateurs {get; set;}
+        public Guid UtilisateurUuid {get; set;}
+        public Utilisateur? Utilisateurs {get; set;}
 
         [JsonIgnore]
         public List<CommandeProduit>? CommandeProduits {get; set;}

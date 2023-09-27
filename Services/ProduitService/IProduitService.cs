@@ -8,8 +8,8 @@ namespace backend_tpgk.Services.ProduitService
 {
     public interface IProduitService
     {
-        Task<ServiceResponse<List<Produit>>> GetAllProduits();
-        Task<ServiceResponse<Produit>> GetProduitById(Guid uuid);
+        Task<ServiceResponse<List<ProduitDtos>>> GetAllProduits();
+        Task<ServiceResponse<ProduitDtos>> GetProduitById(Guid uuid);
         Task<ServiceResponse<Produit>> AddProduit(ProduitDtos newProduit);
         Task<ServiceResponse<Produit>> DeleteProduit(Guid UuidDeletedProduit);
         Task<ServiceResponse<Produit>> UpdateProduit(Guid uuid, ProduitDtos ProduitUpdated);
