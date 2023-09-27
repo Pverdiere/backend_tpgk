@@ -72,8 +72,6 @@ namespace backend_tpgk.Services.ProduitService
                         await _context.SaveChangesAsync();
                         serviceResponse.Data = produit;
                     }
-
-                    
                 }
                 
             }catch(Exception ex){
@@ -204,17 +202,29 @@ namespace backend_tpgk.Services.ProduitService
                 serviceResponse.Message = "Produit not found";
             }else{
                 try{
+                    List<string> acceptedType = new(){
+                        "image/jpeg",
+                        "image/bmp",
+                        "image/gif",
+                        "image/png",
+                        "image/tiff"
+                    };
                     Type type = updatedProduit.GetType();
                     PropertyInfo[] props = type.GetProperties();
 
                     foreach(var prop in props){
                         if(prop.GetValue(updatedProduit) is not null){
                             if(prop.Name == "File"){
-                                string filePath = $"../../img/{dbProduit.Uuid}";
-                                dbProduit.UrlImg = filePath;
-                                FileStream fs = File.Create(filePath);
-                                updatedProduit.File?.CopyTo(fs);
-                                fs.Close();
+                                if(!acceptedType.Contains(updatedProduit.File!.ContentType)){
+                                    throw new Exception("Le format d'image n'est pas accepté");
+                                }else{
+                                    string filePath = $"../../img/{dbProduit.Uuid}";
+                                    dbProduit.UrlImg = filePath;
+                                    FileStream fs = File.Create(filePath);
+                                    updatedProduit.File!.CopyTo(fs);
+                                    fs.Close();
+                                }
+                                
                             }else{
                                 prop.SetValue(dbProduit,prop.GetValue(updatedProduit));
                             }
