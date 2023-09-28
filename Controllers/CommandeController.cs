@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using backend_tpgk.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,5 +47,20 @@ public class CommandeController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<ServiceResponse<Commande>>> DeleteCommande(Guid id){
         return Ok(await _commandeService.DeleteCommande(id));
+    }
+
+    [HttpGet("User/{id}")]
+    public async Task<ActionResult<ServiceResponse<List<Commande>>>> GetCommandeByUser(Guid id){
+        bool roleIsClient = false;
+        string uuid = "";
+
+        foreach(Claim claim in User.Claims){
+            if(claim.Type == "Id") uuid = claim.Value;
+            if(claim.Type == "Role" && (claim.Value == "Client" || claim.Value == "Modérateur")) roleIsClient = true;
+        }
+
+        if(roleIsClient && uuid != id.ToString()) return new ForbidResult();
+
+        return Ok(await _commandeService.GetCommandeByUser(id));
     }
 }

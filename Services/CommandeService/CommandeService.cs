@@ -133,5 +133,15 @@ namespace backend_tpgk.Services.CommandeService
             }
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<Commande>>> GetCommandeByUser(Guid idUser){
+            ServiceResponse<List<Commande>> serviceResponse = new();
+            List<Commande> dbCommande = await _context.Commande.Where(c => c.UtilisateurUuid == idUser)
+            .Include(c => c.CommandeProduits)!
+            .ThenInclude(c => c.Produit)
+            .ToListAsync();
+            serviceResponse.Data = dbCommande;
+            return serviceResponse;
+        }
     }
 }

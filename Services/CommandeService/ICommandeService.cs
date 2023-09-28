@@ -13,5 +13,6 @@ namespace backend_tpgk.Services.CommandeService
         Task<ServiceResponse<Commande>> AddCommande(Commande newCommande);
         Task<ServiceResponse<Commande>> DeleteCommande(Guid UuidDeletedCommande);
         Task<ServiceResponse<Commande>> UpdateCommande(Guid uuid, CommandeDtos CommandeUpdated);
+        Task<ServiceResponse<List<Commande>>> GetCommandeByUser(Guid uuidUtilisateur);
     }
 }

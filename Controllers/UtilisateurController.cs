@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using backend_tpgk.Dtos;
-using backend_tpgk.Requirement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,16 +66,6 @@ public class UtilisateurController : ControllerBase
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult<ServiceResponse<Utilisateur>>> DeleteUtilisateur(Guid id){
-        bool roleIsClient = false;
-        string uuid = "";
-
-        foreach(Claim claim in User.Claims){
-            if(claim.Type == "Id") uuid = claim.Value;
-            if(claim.Type == "Role" && (claim.Value == "Client" || claim.Value == "Modérateur" || claim.Value == "Assistant")) roleIsClient = true;
-        }
-
-        if(roleIsClient && uuid != id.ToString()) return new ForbidResult();
-
         return Ok(await _utilisateurService.DeleteUtilisateur(id));
     }
 
