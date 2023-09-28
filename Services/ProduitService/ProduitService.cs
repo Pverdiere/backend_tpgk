@@ -211,6 +211,8 @@ namespace backend_tpgk.Services.ProduitService
                     };
                     Type type = updatedProduit.GetType();
                     PropertyInfo[] props = type.GetProperties();
+                    Type typeProduit = dbProduit.GetType();
+                    PropertyInfo[] propsProduit = type.GetProperties();
 
                     foreach(var prop in props){
                         if(prop.GetValue(updatedProduit) is not null){
@@ -226,7 +228,8 @@ namespace backend_tpgk.Services.ProduitService
                                 }
                                 
                             }else{
-                                prop.SetValue(dbProduit,prop.GetValue(updatedProduit));
+                                var propChange = propsProduit.Where(r => r.Name == prop.Name).First();
+                                propChange.SetValue(dbProduit,prop.GetValue(updatedProduit));
                             }
                         }
                     }

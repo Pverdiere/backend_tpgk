@@ -17,10 +17,12 @@ namespace backend_tpgk.Services.UtilisateurService
     public class UtilisateurService : IUtilisateurService
     {
         private readonly DataContext _context;
+        private readonly IAdresseService _adresseService;
 
-        public UtilisateurService(DataContext context)
+        public UtilisateurService(DataContext context, IAdresseService adresseService)
         {
             _context = context;
+            _adresseService = adresseService;
         }
 
         public async Task<ServiceResponse<Utilisateur>> AddUtilisateur(Utilisateur newUtilisateur)
@@ -33,6 +35,15 @@ namespace backend_tpgk.Services.UtilisateurService
                 serviceResponse.Success = false;
             }else{
                 try{
+                    if(newUtilisateur.Adresse is not null){
+                        ServiceResponse<ResponseVerif> verif = await _adresseService.VerifAdresse(newUtilisateur.Adresse);
+                        if(verif.Data!.Valid){
+                            newUtilisateur.AdresseUuid = verif.Data.UuidAdresse;
+                        }else{
+                            ServiceResponse<Adresse> adresse = await _adresseService.AddAdresse(newUtilisateur.Adresse);
+                            newUtilisateur.AdresseUuid = adresse.Data!.Uuid;
+                        }
+                    }
                     await _context.Utilisateur.AddAsync(newUtilisateur);
                     await _context.SaveChangesAsync();
                     serviceResponse.Data = newUtilisateur;
@@ -94,10 +105,23 @@ namespace backend_tpgk.Services.UtilisateurService
                 try{
                     Type type = updatedUtilisateur.GetType();
                     PropertyInfo[] props = type.GetProperties();
+                    Type typeUtilisateur = dbUtilisateur.GetType();
+                    PropertyInfo[] propsUtilisateur = type.GetProperties();
 
                     foreach(var prop in props){
                         if(prop.GetValue(updatedUtilisateur) is not null){
-                            prop.SetValue(dbUtilisateur,prop.GetValue(updatedUtilisateur));
+                            var propChange = propsUtilisateur.Where(r => r.Name == prop.Name).First();
+                            propChange.SetValue(dbUtilisateur,prop.GetValue(updatedUtilisateur));
+                        }
+                    }
+
+                    if(updatedUtilisateur.Adresse is not null){
+                        ServiceResponse<ResponseVerif> verif = await _adresseService.VerifAdresse(updatedUtilisateur.Adresse);
+                        if(verif.Data!.Valid){
+                            dbUtilisateur.AdresseUuid = verif.Data.UuidAdresse;
+                        }else{
+                            ServiceResponse<Adresse> adresse = await _adresseService.AddAdresse(updatedUtilisateur.Adresse);
+                            dbUtilisateur.AdresseUuid = adresse.Data!.Uuid;
                         }
                     }
 
@@ -122,7 +146,8 @@ namespace backend_tpgk.Services.UtilisateurService
                         new Claim("Name", dbUtilisateur.Name),
                         new Claim("Lastname", dbUtilisateur.Lastname),
                         new Claim("Email", dbUtilisateur.Email),
-                        new Claim("Role", dbUtilisateur.RoleUuid.ToString()),
+                        new Claim("Role", dbUtilisateur.Role!.Name),
+                        new Claim(ClaimTypes.Role, dbUtilisateur.Role!.Name),
                         new Claim("Birtday", dbUtilisateur.Birthday.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddHours(24),

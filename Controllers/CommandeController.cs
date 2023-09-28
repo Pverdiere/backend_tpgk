@@ -1,9 +1,11 @@
 using backend_tpgk.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_tpgk.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class CommandeController : ControllerBase
 {
@@ -14,6 +16,7 @@ public class CommandeController : ControllerBase
         _commandeService = CommandeService;
     }
 
+    [Authorize(Roles = "Responsable, Assistant, Admin")]
     [HttpGet]
     public async Task<ActionResult<ServiceResponse<List<Commande>>>> GetAll()
     {
@@ -32,12 +35,14 @@ public class CommandeController : ControllerBase
         return Ok(await _commandeService.AddCommande(body));
     }
 
+    [Authorize(Roles = "Responsable, Assistant, Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<ServiceResponse<Commande>>> UpdateCommande(Guid id, [FromBody] CommandeDtos body)
     {
         return Ok(await _commandeService.UpdateCommande(id, body));
     }
 
+    [Authorize(Roles = "Responsable, Assistant, Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult<ServiceResponse<Commande>>> DeleteCommande(Guid id){
         return Ok(await _commandeService.DeleteCommande(id));

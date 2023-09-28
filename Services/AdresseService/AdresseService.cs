@@ -155,5 +155,32 @@ namespace backend_tpgk.Services.AdresseService
             }
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<ResponseVerif>> VerifAdresse(Adresse newAdresse){
+            ServiceResponse<ResponseVerif> serviceResponse = new();
+            Adresse? dbAdresse = await _context.Adresse.Where(r => r.Number == newAdresse.Number && r.Rue.Name == newAdresse.Rue.Name && r.Pays.Name == newAdresse.Pays.Name && r.Ville.CodePostal == newAdresse.Ville.CodePostal)
+                .Include(a => a.Ville)
+                .Include(a => a.Pays)
+                .Include(a => a.Rue)
+                .FirstOrDefaultAsync();
+            if(dbAdresse is null){
+                serviceResponse.Data = new(){
+                    Valid = false
+                };
+            }else{
+                serviceResponse.Data = new(){
+                    Valid = true,
+                    UuidAdresse = dbAdresse.Uuid
+                };
+            }
+            
+            return serviceResponse;
+        }
+    }
+
+    public class ResponseVerif
+    {
+        public required bool Valid;
+        public Guid? UuidAdresse;
     }
 }

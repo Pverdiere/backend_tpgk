@@ -1,9 +1,11 @@
 using backend_tpgk.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_tpgk.Controllers;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("[controller]")]
 public class RueController : ControllerBase
 {

@@ -1,10 +1,12 @@
 using backend_tpgk.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_tpgk.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Roles = "Admin")]
 public class AdresseController : ControllerBase
 {
     private readonly IAdresseService _adresseService;

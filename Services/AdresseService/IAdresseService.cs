@@ -13,5 +13,6 @@ namespace backend_tpgk.Services.AdresseService
         Task<ServiceResponse<Adresse>> AddAdresse(Adresse newAdresse);
         Task<ServiceResponse<Adresse>> DeleteAdresse(Guid uuid);
         Task<ServiceResponse<Adresse>> UpdateAdresse(Guid uuid, AdresseDtos updatedAdresse);
+        Task<ServiceResponse<ResponseVerif>> VerifAdresse(Adresse newAdresse);
     }
 }

@@ -16,7 +16,6 @@ global using backend_tpgk.Services.VilleService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using backend_tpgk.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,10 +48,21 @@ builder.Services.AddCors(options => {
         .AllowAnyHeader());
 });
 
-builder.Services.AddTransient<CustomJwtBearerHandler>();
-builder.Services.AddHttpClient();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddScheme<JwtBearerOptions, CustomJwtBearerHandler>(JwtBearerDefaults.AuthenticationScheme, options => { });
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("qsgriopghe56seg4r44qerg46es6rsgrg4g"))
+    };
+});
 
 builder.Services.AddAuthorization();
 
