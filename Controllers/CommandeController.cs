@@ -27,7 +27,19 @@ public class CommandeController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ServiceResponse<Commande>>> GetSingle(Guid id)
     {
-        return Ok(await _commandeService.GetCommandeById(id));
+        bool roleIsClient = false;
+        string uuid = "";
+
+        foreach(Claim claim in User.Claims){
+            if(claim.Type == "Id") uuid = claim.Value;
+            if(claim.Type == "Role" && (claim.Value == "Client" || claim.Value == "Modérateur")) roleIsClient = true;
+        }
+
+        ServiceResponse<Commande> serviceResponseCommande = await _commandeService.GetCommandeById(id);
+
+        if(roleIsClient && uuid != serviceResponseCommande.Data?.UtilisateurUuid.ToString()) return new ForbidResult();
+
+        return Ok(serviceResponseCommande);
     }
 
     [HttpPost]
