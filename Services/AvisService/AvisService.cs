@@ -10,22 +10,29 @@ namespace backend_tpgk.Services.AvisService
     public class AvisService : IAvisService
     {
         private readonly DataContext _context;
+        private readonly ICommandeService _commandeService;
 
-        public AvisService(DataContext context)
+        public AvisService(DataContext context, ICommandeService commandeService)
         {
             _context = context;
+            _commandeService = commandeService;
         }
 
         public async Task<ServiceResponse<Avis>> AddAvis(Avis newAvis)
         {
             ServiceResponse<Avis> serviceResponse = new();
-            System.Diagnostics.Debug.WriteLine(newAvis);
-            try{
-                await _context.Avis.AddAsync(newAvis);
-                await _context.SaveChangesAsync();
-                serviceResponse.Data = newAvis;
-            }catch(Exception ex){
-                serviceResponse.Message = ex.Message;
+            ServiceResponse<List<Commande>> serviceResponseCommande = await _commandeService.GetCommandeByUser(newAvis.UtilisateurUuid);
+            if(serviceResponseCommande.Data!.Count() > 0 && serviceResponseCommande.Data!.Exists(c => c.CommandeProduits!.Find(cp => cp.ProduitUuid == newAvis.ProduitUuid)?.ProduitUuid == newAvis.ProduitUuid)){
+                try{
+                    await _context.Avis.AddAsync(newAvis);
+                    await _context.SaveChangesAsync();
+                    serviceResponse.Data = newAvis;
+                }catch(Exception ex){
+                    serviceResponse.Message = ex.Message;
+                    serviceResponse.Success = false;
+                }
+            }else{
+                serviceResponse.Message = "Vous ne pouvez pas donner votre avis sur un produit non commandé.";
                 serviceResponse.Success = false;
             }
             

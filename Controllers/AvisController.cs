@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using backend_tpgk.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,14 @@ public class AvisController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ServiceResponse<Avis>>> AddAvis([FromBody] Avis body)
     {
+        string uuid = "";
+        
+        foreach(Claim claim in User.Claims){
+            if(claim.Type == "Id") uuid = claim.Value;
+        }
+
+        if(uuid != body.UtilisateurUuid.ToString()) return new ForbidResult();
+
         return Ok(await _avisService.AddAvis(body));
     }
 
